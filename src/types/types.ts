@@ -14,7 +14,5 @@ export type ExpenseStats = {
 
 export type ExpenseContextType = {
   expenses: Expense[];
-  addExpense: (e: Expense) => void;
-  editExpense: (index: number, updated: Expense) => void;
-  deleteExpense: (index: number) => void;
+  updateLocalStorage: (newExpenses: Expense[]) => void;
 };

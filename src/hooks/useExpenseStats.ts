@@ -5,7 +5,9 @@ import { useExpenses } from "../context/ExpenseContext";
 const useExpenseStats = (): ExpenseStats => {
   const { expenses } = useExpenses();
   const [total, setTotal] = useState<number | null>(null);
-  const [mostSpentCategory, setMostSpentCategory] = useState<string | null>(null);
+  const [mostSpentCategory, setMostSpentCategory] = useState<string | null>(
+    null
+  );
   const [recentCount, setRecentCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -23,15 +25,21 @@ const useExpenseStats = (): ExpenseStats => {
     const totalAmount = data.reduce((sum, e) => sum + e.amount, 0);
     setTotal(totalAmount);
 
-    const categoryTotals: Record<string, number> = {};
-    data.forEach((e) => {
-      categoryTotals[e.category] = (categoryTotals[e.category] || 0) + e.amount;
-    });
+    let maxCategory: string | null = null;
+    let maxAmount = 0;
+    const categoryTotals = new Map<string, number>();
 
-    const mostSpent =
-      Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0]?.[0] ||
-      null;
-    setMostSpentCategory(mostSpent);
+    for (const { category, amount } of data) {
+      const total = (categoryTotals.get(category) || 0) + amount;
+      categoryTotals.set(category, total);
+
+      if (total > maxAmount) {
+        maxAmount = total;
+        maxCategory = category;
+      }
+    }
+
+    setMostSpentCategory(maxCategory);
 
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);

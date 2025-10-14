@@ -16,28 +16,13 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const updateLocalStorage = (newExpenses: Expense[]) => {
-    setExpenses(newExpenses);
-    localStorage.setItem("expenses", JSON.stringify(newExpenses));
-  };
-
-  const addExpense = (e: Expense) => {
-    updateLocalStorage([...expenses, e]);
-  };
-
-  const editExpense = (index: number, updated: Expense) => {
-    const newList = [...expenses];
-    newList[index] = updated;
-    updateLocalStorage(newList);
-  };
-
-  const deleteExpense = (index: number) => {
-    const newList = expenses.filter((_, i) => i !== index);
-    updateLocalStorage(newList);
+        setExpenses(newExpenses);
+        localStorage.setItem("expenses", JSON.stringify(newExpenses));
   };
 
   return (
     <ExpenseContext.Provider
-      value={{ expenses, addExpense, editExpense, deleteExpense }}
+      value={{ expenses, updateLocalStorage }}
     >
       {children}
     </ExpenseContext.Provider>

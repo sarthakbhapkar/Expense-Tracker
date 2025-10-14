@@ -17,7 +17,7 @@ const categories = ["Food", "Travel", "Bills", "Entertainment", "Other"];
 const ExpenseForm = () => {
   const { index } = useParams<{ index?: string }>();
   const navigate = useNavigate();
-  const { expenses, addExpense, editExpense } = useExpenses();
+  const { expenses, updateLocalStorage } = useExpenses();
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState<number | "">("");
@@ -67,6 +67,16 @@ const ExpenseForm = () => {
       navigate("/all-expenses");
     }, 1000);
   };
+  
+    const addExpense = (e: Expense) => {
+      updateLocalStorage([...expenses, e]);
+    };
+  
+    const editExpense = (index: number, updated: Expense) => {
+      const newList = [...expenses];
+      newList[index] = updated;
+      updateLocalStorage(newList);
+    };
 
   return (
     <Box>

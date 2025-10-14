@@ -12,6 +12,11 @@ import {
   Button,
   Autocomplete,
   TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { FormEvent, useEffect, useState } from "react";
@@ -24,8 +29,10 @@ const ExpenseList = () => {
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const { expenses, deleteExpense } = useExpenses();
+  const { expenses, updateLocalStorage } = useExpenses();
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [expenseToDelete, setExpenseToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     setFilteredExpenses(
@@ -42,6 +49,20 @@ const ExpenseList = () => {
 
   const handleCategoryChange = (event: FormEvent, value: string | null) => {
     setSelectedCategory(value);
+  };
+
+  const handleConfirmDelete = () => {
+    if (expenseToDelete !== null) {
+      const newList = expenses.filter((_, i) => i !== expenseToDelete);
+      updateLocalStorage(newList);
+    }
+    setOpenDialog(false);
+    setExpenseToDelete(null);
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDialog(false);
+    setExpenseToDelete(null);
   };
 
   return (
@@ -100,7 +121,10 @@ const ExpenseList = () => {
                       </IconButton>
                       <IconButton
                         color="error"
-                        onClick={() => deleteExpense(index)}
+                        onClick={() => {
+                          setExpenseToDelete(index);
+                          setOpenDialog(true);
+                        }}
                       >
                         <Delete />
                       </IconButton>
@@ -119,6 +143,25 @@ const ExpenseList = () => {
         >
           ➕ Add New Expense
         </Button>
+        <Dialog
+          open={openDialog}
+          onClose={handleCancelDelete}
+          aria-labelledby="confirm-dialog-title"
+          aria-describedby="confirm-dialog-description"
+        >
+          <DialogTitle id="confirm-dialog-title">Confirm Deletion</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="confirm-dialog-description">
+              Are you sure you want to delete this expense?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancelDelete}>Cancel</Button>
+            <Button onClick={handleConfirmDelete} color="error" autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Box>
   );

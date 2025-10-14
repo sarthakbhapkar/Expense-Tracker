@@ -3,16 +3,45 @@ import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App: React.FC = () => {
   return (
     <div className="min-h-screen">
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/add-expense" element={<ExpenseForm />} />
-        <Route path="/edit-expense/:index" element={<ExpenseForm />} />
-        <Route path="/all-expenses" element={<ExpenseList />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-expense"
+          element={
+            <ProtectedRoute>
+              <ExpenseForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-expense/:index"
+          element={
+            <ProtectedRoute>
+              <ExpenseForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-expenses"
+          element={
+            <ProtectedRoute>
+              <ExpenseList />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Login />} />
       </Routes>
     </div>

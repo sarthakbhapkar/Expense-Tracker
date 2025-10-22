@@ -1,17 +1,13 @@
-import React, {useState} from "react";
+import React from "react";
 import { Box, Typography, Paper, Grid, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./NavBar";
 import useExpenseStats from "../hooks/useExpenseStats";
+import ExpensePieChart from "./ExpensePieChart";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { total, mostSpentCategory, recentCount } = useExpenseStats();
-
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    navigate("/login");
-  };
   
   return (
     <Box>
@@ -65,6 +61,7 @@ const Dashboard: React.FC = () => {
           </Grid>
         </Grid>
       </Box>
+      <ExpensePieChart />
     </Box>
   );
 };

@@ -16,3 +16,9 @@ export type ExpenseContextType = {
   expenses: Expense[];
   updateLocalStorage: (newExpenses: Expense[]) => void;
 };
+
+export type PieData  = {
+  name: string;
+  value: number;
+[key: string]: string | number; 
+}

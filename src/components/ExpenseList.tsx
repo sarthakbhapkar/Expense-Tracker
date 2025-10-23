@@ -25,6 +25,14 @@ import Navbar from "./NavBar";
 import type { Expense } from "../types/types";
 import { useExpenses } from "../context/ExpenseContext";
 
+const categoryColors: Record<string, string> = {
+  Food: "#0088FE",
+  Travel: "#00C49F",
+  Bills: "#FFBB28",
+  Entertainment: "#FF8042",
+  Other: "#A28EF9",
+};
+
 const ExpenseList = () => {
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
@@ -111,7 +119,25 @@ const ExpenseList = () => {
                     <TableCell>{expense.title}</TableCell>
                     <TableCell>₹{expense.amount}</TableCell>
                     <TableCell>{expense.date}</TableCell>
-                    <TableCell>{expense.category}</TableCell>
+                    <TableCell>
+                      <span
+                        style={{
+                          backgroundColor:
+                            categoryColors[expense.category] || "#ccc",
+                          color: "white",
+                          padding: "4px 8px",
+                          borderRadius: "12px",
+                          fontSize: "0.85rem",
+                          fontWeight: 500,
+                          display: "inline-block",
+                          textTransform: "capitalize",
+                          alignItems:"center"
+                        }}
+                      >
+                        {expense.category}
+                      </span>
+                    </TableCell>
+
                     <TableCell align="center">
                       <IconButton
                         color="primary"

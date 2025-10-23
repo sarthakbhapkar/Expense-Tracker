@@ -49,6 +49,7 @@ const ExpenseForm = () => {
     }
 
     const newExpense: Expense = {
+      id:isEdit ? expenses[parseInt(index!)].id : crypto.randomUUID(),
       title,
       amount: Number(amount),
       date,

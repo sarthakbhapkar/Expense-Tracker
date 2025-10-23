@@ -26,6 +26,26 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
 
+  // const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   setTimeout(() => {
+  //     setLoading(false);
+
+  //     if (email === DUMMY_EMAIL && password === DUMMY_PASSWORD) {
+  //       setSnackOpen(true);
+  //       localStorage.setItem("isLoggedIn", "true");
+
+  //       setTimeout(() => {
+  //         navigate("/dashboard");
+  //       }, 1000);
+  //     } else {
+  //       alert("Invalid credentials!");
+  //     }
+  //   }, 1000);
+  // };
+
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -33,9 +53,17 @@ const Login = () => {
     setTimeout(() => {
       setLoading(false);
 
-      if (email === DUMMY_EMAIL && password === DUMMY_PASSWORD) {
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+      const matchedUser = users.find(
+        (user: any) => user.email === email && user.password === password
+      );
+
+      if (matchedUser) {
         setSnackOpen(true);
         localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("currentUser", JSON.stringify(matchedUser));
+        window.dispatchEvent(new Event("currentUserChange"));
         setTimeout(() => {
           navigate("/dashboard");
         }, 1000);
@@ -44,7 +72,6 @@ const Login = () => {
       }
     }, 1000);
   };
-
   return (
     <Container
       maxWidth={false}

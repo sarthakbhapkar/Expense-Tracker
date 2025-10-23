@@ -4,12 +4,14 @@ import Login from "./components/Login";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RegisterUser from "./components/RegisterUser";
 
 const App: React.FC = () => {
   return (
     <div className="min-h-screen">
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegisterUser />} />
         <Route
           path="/dashboard"
           element={
